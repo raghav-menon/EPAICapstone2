@@ -1,0 +1,122 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('static', filename='css/dashboard.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='css/form_slideshow.css')}}">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block content %}
+
+
+
+
+
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">{{name}}'s Workspace</a>
+        </div> <!--navbar-header div ends-->
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="javascript:void(0)">Profile</a></li>
+            <li><a href="javascript:void(0)" id="tempModal">Saved Templates</a></li>
+			<li><a href="javascript:void(0)" id="NewTM" onclick="showWorkspace()">New Template</a></li>
+      <li><a href="javascript:void(0)" onclick="downloadInnerHtml()">Save Template</a></li>
+			<li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="javascript:void(0)" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Layouts
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="javascript:void(0)" onclick="leftLayout()">Left Aligned<img src="{{url_for('static', filename='images/left.png')}}" style="height:5em;width:64px" /></a>
+		  <br/>
+          <a class="dropdown-item" href="javascript:void(0)" onclick="rightLayout()">Right Aligned<img class="rightImg" src="{{url_for('static', filename='images/left.png')}}" style="height:5em;"/></a>
+          
+        </div><!--navbar-dropdown div ends-->
+      </li>
+            
+            
+            <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+          </ul>
+       
+        </div><!--navbar-collapse div ends-->
+      </div><!--container fluid 1 div ends-->
+    </nav>
+<!--nav tag ends-->
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li class="active"><a href="#">Elements <span class="sr-only">(current)</span></a></li>
+            <li><a>Multiple Choice <input type="button" value="+" style="float: right" onclick="addMcq();"></a></li>
+            <li><a href="javascript:void(0)">Phone Number<input type="button" value="+" style="float: right" onclick="addPhone();"></a></li>
+            <li><a href="javascript:void(0)">Short Text <input type="button" value="+" style="float: right" onclick="addShortText()"></a></li>
+			<li><a href="javascript:void(0)">Long Text <input type="button" value="+" style="float: right" onclick="addLongText()"></a></li>
+            <li><a href="javascript:void(0)">Pic Multi.Choice<input type="button" value="+" style="float: right" onclick="addImageMcq()"></a></li>
+            <li><a href="javascript:void(0)">Email<input type="button" value="+" style="float: right" onclick="addEmail()"></a></li>
+            <li><a href="javascript:void(0)">Date<input type="button" value="+" style="float: right" onclick="addDate()"></a></li>
+			<li><a href="javascript:void(0)">Comment<input type="button" value="+" style="float: right" onclick="addComment()"></a></li>
+			<li><a href="javascript:void(0)">Yes/No<input type="button" value="+" style="float: right" onclick="addRadio()"></a></li>
+			<li><a href="javascript:void(0)">Likert<input type="button" value="+" style="float: right" onclick="addLikert()"></a></li>
+      <li><a href="javascript:void(0)">Fill Blank<input type="button" value="+" style="float: right" onclick="addFillUp()"></a></li>
+          </ul>
+         
+        </div><!--sidebar div ends-->
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <br>
+          <br>
+          <h1 class="page-header">Welcome, {{ name }}</h1>
+
+
+
+          <h2 class="sub-header">Workspace</h2>
+ 
+          <br/>
+
+          <div  id="templateName" style="display: none;">Template Name: &nbsp; &nbsp; <input type="text"></div>
+
+          <!-------------->
+          <br/>
+          <div class="slideshow-container" style="width:100%;height:450px;border:2px solid black;display:none;">
+            
+            <div class="mySlides">
+              <div class="templateContainer">
+              <h1 id="templateTitle">Template 1</h1>
+              <p>Start creating...</p>
+              </div>
+            </div>
+                        
+            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+            
+            </div>
+            <br>
+
+          <div class="dotSpan" id="dotSpan" style="text-align:center;display:none;">
+            <span class="dot" onclick="currentSlide(1)"></span> 
+          </div>
+          <!-------------->
+
+          
+          </div><!--offset div ends-->
+        </div><!--row div ends-->
+      </div><!--container-fluid div ends-->
+
+
+
+<script src="{{url_for('static', filename='js/form_slideshow.js')}}"></script>	
+{% endblock %}
